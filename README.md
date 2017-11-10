@@ -1,1 +1,1 @@
-# coinpayments_bitcoin
+# CoinPayments Bitcoin
