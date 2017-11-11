@@ -134,7 +134,7 @@ class CoinPayments implements CoinPaymentsInterface
 	}
 
 	public function validateIPNRequest(Request $request) {
-        return $this->cps->income_payment($request->all(), $request->server(), $request->headers);
+        return $this->income_payment($request->all(), $request->server(), $request->headers);
     }
 
 	public function send_money($payment_id, $amount, $address, $currency){
