@@ -15,7 +15,7 @@ use Selfreliance\CoinPayments\CoinPaymentsInterface;
 
 use Selfreliance\CoinPayments\Libs\CoinPaymentsAPI;
 use Selfreliance\CoinPayments\Exceptions\CoinPaymentsException;
-
+use Log;
 class CoinPayments implements CoinPaymentsInterface
 {
 	use ValidatesRequests;
