@@ -34,6 +34,13 @@ class CoinPayments implements CoinPaymentsInterface
 		return $result['result'][$this->unit]['balancef'];
 	}
 
+	// public function test(){
+	// 	$PassData                     = new \stdClass();
+		
+
+	// 	event(new CoinPaymentsPaymentIncome($PassData));			
+	// }
+
 	public function form($payment_id, $sum, $units){
 		$req = [
 			'amount'      => $sum,
@@ -76,17 +83,18 @@ class CoinPayments implements CoinPaymentsInterface
 
 		try {
 			$is_complete = $this->validateIPN($request, $server);
-			if($is_complete){
-				Log::info('CoinPayments IPN', [
-					'info' => $is_complete
-				]);				
-				// $PassData                 = new \stdClass();
-				// $PassData->amount         = $PAYMENT_AMOUNT;
-				// $PassData->payment_id     = $PAYMENT_ID;
-				// $PassData->payment_system = 4;
-				// $PassData->transaction    = $PAYMENT_BATCH_NUM;
-				
-				// event(new CoinPaymentsPaymentIncome($PassData));				
+			if($is_complete){			
+				$PassData                     = new \stdClass();
+				$PassData->amount             = $request['received_amount'];
+				$PassData->payment_id         = $request['item_number'];
+				$PassData->search_by_currency = true;
+				$PassData->currency           = $request['currency1'];
+				$PassData->transaction        = $request['send_tx'];
+				$PassData->add_info           = [
+					"ipn_id" => $request['ipn_id'],
+					"txn_id" => $request['txn_id']
+				];
+				event(new CoinPaymentsPaymentIncome($PassData));			
 			}
 		} catch (CoinPaymentsException $e) {
 			Log::error('CoinPayments IPN', [
