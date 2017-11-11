@@ -1,6 +1,6 @@
 <?php
 
-namespace Selfreliance\CoinPaymentsBitcoin\Events;
+namespace Selfreliance\CoinPayments\Events;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
@@ -10,7 +10,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class CoinPaymentsBitcoinPaymentIncome
+class CoinPaymentsPaymentIncome
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 

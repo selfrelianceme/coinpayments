@@ -1,10 +1,10 @@
 {
-  "name": "selfreliance/coinpayments_bitcoin",
+  "name": "selfreliance/coinpayments",
   "type": "library",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "CoinPayments bitcoin payment system for laravel",
   "keywords": ["laravel"],
-  "homepage": "https://github.com/selfrelianceme/coinpayments_bitcoin",
+  "homepage": "https://github.com/selfrelianceme/coinpayments",
   "license": "MIT",
   "authors": [
     {
@@ -15,7 +15,7 @@
   "extra": {
       "laravel":{
           "providers": [
-            "Selfreliance\\CoinPaymentsBitcoin\\CoinPaymentsBitcoinServiceProvider"
+            "Selfreliance\\CoinPayments\\CoinPaymentsServiceProvider"
           ]
       }
   },
@@ -26,6 +26,6 @@
     "phpunit/phpunit": "~4.8"
   },
   "autoload": {
-    "psr-4": {"Selfreliance\\CoinPaymentsBitcoin\\": "src/"}
+    "psr-4": {"Selfreliance\\CoinPayments\\": "src/"}
   }
 }

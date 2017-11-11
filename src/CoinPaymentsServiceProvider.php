@@ -1,9 +1,9 @@
 <?php
 
-namespace Selfreliance\CoinPaymentsBitcoin;
+namespace Selfreliance\CoinPayments;
 use Illuminate\Support\ServiceProvider;
 
-class CoinPaymentsBitcoinServiceProvider extends ServiceProvider
+class CoinPaymentsServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
@@ -14,10 +14,10 @@ class CoinPaymentsBitcoinServiceProvider extends ServiceProvider
     {
         //
         include __DIR__ . '/routes.php';
-        $this->app->make('Selfreliance\CoinPaymentsBitcoin\CoinPaymentsBitcoin');
+        $this->app->make('Selfreliance\CoinPayments\CoinPayments');
 
         $this->publishes([
-            __DIR__.'/config/coinpayments_bitcoin.php' => config_path('coinpayments_bitcoin.php'),
+            __DIR__.'/config/coinpayments.php' => config_path('coinpayments.php'),
         ], 'config');
     }
 

@@ -1,1 +1,1 @@
-# CoinPayments Bitcoin
+# CoinPayments

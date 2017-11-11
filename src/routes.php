@@ -1,4 +1,5 @@
 <?php
 
-Route::post('coinpayments_bitcoin/cancel', 'Selfreliance\CoinPaymentsBitcoin\CoinPaymentsBitcoin@cancel_payment')->name('coinpayments_bitcoin.cancel');
-Route::post('coinpayments_bitcoin/confirm', 'Selfreliance\CoinPaymentsBitcoin\CoinPaymentsBitcoin@check_transaction')->name('coinpayments_bitcoin.confirm');
+Route::post('coinpayments/cancel', 'Selfreliance\CoinPayments\CoinPayments@cancel_payment')->name('coinpayments.cancel');
+Route::post('coinpayments/confirm', 'Selfreliance\CoinPayments\CoinPayments@validateIPNRequest')->name('coinpayments.confirm');
+// Route::post('coinpayments/webhookwithdraw', 'Selfreliance\CoinPayments\CoinPayments@check_transaction')->name('coinpayments.webhookwithdraw');
