@@ -37,6 +37,10 @@ class CoinPaymentsAPI {
 	public function GetInfo() {		
 		return $this->api_call('get_basic_info', array());
 	}
+
+	public function GetTxInfo($txid, $full = false){
+		return $this->api_call('get_tx_info', array('txid' => $txid, 'full'=> $full ? 1:0));
+	}
 	
 	/**
 	 * Creates a basic transaction with minimal parameters.<br />

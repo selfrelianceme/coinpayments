@@ -34,13 +34,6 @@ class CoinPayments implements CoinPaymentsInterface
 		return $result['result'][$this->unit]['balancef'];
 	}
 
-	// public function test(){
-	// 	$PassData                     = new \stdClass();
-		
-
-	// 	event(new CoinPaymentsPaymentIncome($PassData));			
-	// }
-
 	public function form($payment_id, $sum, $units){
 		$req = [
 			'amount'      => $sum,
