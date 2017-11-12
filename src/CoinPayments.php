@@ -89,10 +89,10 @@ class CoinPayments implements CoinPaymentsInterface
 				$PassData->payment_id         = $request['item_number'];
 				$PassData->search_by_currency = true;
 				$PassData->currency           = $request['currency1'];
-				$PassData->transaction        = $request['send_tx'];
+				$PassData->transaction        = $request['txn_id'];
 				$PassData->add_info           = [
-					"ipn_id" => $request['ipn_id'],
-					"txn_id" => $request['txn_id']
+					"ipn_id"        => $request['ipn_id'],
+					"full_data_ipn" => json_encode($request)
 				];
 				event(new CoinPaymentsPaymentIncome($PassData));			
 			}
