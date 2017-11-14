@@ -26,12 +26,15 @@ class CoinPayments implements CoinPaymentsInterface
 		$this->cps->Setup(Config::get('coinpayments.private_key'), Config::get('coinpayments.public_key'));
 	}
 
-	public function balance(){
+	public function balance($unit = false){
+		if(!$unit){
+			$unit = $this->unit;
+		}
 		$result = $this->cps->GetBalances(true);
 		if ($result['error'] != 'ok'){
 			throw new \Exception($result['error']);			
 		}
-		return $result['result'][$this->unit]['balancef'];
+		return $result['result'][$unit]['balancef'];
 	}
 
 	public function form($payment_id, $sum, $units){
