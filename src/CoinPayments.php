@@ -160,23 +160,15 @@ class CoinPayments implements CoinPaymentsInterface
 			"full_data" => $result
 		];
 
-		Log::info('CoinPayments withdraw', [
-			'result'   => $result,
-			'PassData' => $PassData
-		]);
-
 		return $PassData;
 	}
 
 	public function webhookwithdraw(Request $request){
-		Log::info('CoinPayments webhookwithdraw', [
-			'request' => $request->all()
-		]);
 		/**
 		 * Добавить больше проверок валидации вход данных
 		 */
 
-		Withdraw::id($request->input('id'))->currency($request->input('currency'))->transaction_compleated();
+		Withdraw::id($request->input('id'))->currency($request->input('currency'))->txn_id($request->input('txn_id'))->transaction_compleated();
 	}
 
 	public function cancel_payment(Request $request){
