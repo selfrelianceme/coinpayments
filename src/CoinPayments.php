@@ -148,16 +148,28 @@ class CoinPayments implements CoinPaymentsInterface
 		if ($result['error'] != 'ok'){
 			throw new \Exception($result['error']);			
 		}
-		
+
+		$PassData               = new \stdClass();
+		$PassData->sending      = false;
+		$PassData->coinpayments = true;
+		$PassData->add_info     = [
+			"id"        => $result['result']['id'],
+			'status'    => $result['result']['status'],
+			'amount'    => $result['result']['amount'],
+			"full_data" => $result
+		];
+
 		Log::info('CoinPayments withdraw', [
 			'result' => $result
 		]);
+
+		return $PassData;
 	}
 
 	public function webhookwithdraw(Request $request){
 		Log::info('CoinPayments webhookwithdraw', [
 			'request' => $request->all(),
-			'request' => $request
+			'request12' => $request
 		]);
 	}
 
