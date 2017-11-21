@@ -161,7 +161,8 @@ class CoinPayments implements CoinPaymentsInterface
 		];
 
 		Log::info('CoinPayments withdraw', [
-			'result' => $result
+			'result'   => $result,
+			'PassData' => $PassData
 		]);
 
 		return $PassData;
