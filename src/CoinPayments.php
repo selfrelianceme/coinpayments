@@ -16,6 +16,7 @@ use Selfreliance\CoinPayments\CoinPaymentsInterface;
 use Selfreliance\CoinPayments\Libs\CoinPaymentsAPI;
 use Selfreliance\CoinPayments\Exceptions\CoinPaymentsException;
 use Log;
+use Withdraw;
 class CoinPayments implements CoinPaymentsInterface
 {
 	use ValidatesRequests;
@@ -168,9 +169,13 @@ class CoinPayments implements CoinPaymentsInterface
 
 	public function webhookwithdraw(Request $request){
 		Log::info('CoinPayments webhookwithdraw', [
-			'request' => $request->all(),
-			'request12' => $request
+			'request' => $request->all()
 		]);
+		/**
+		 * Добавить больше проверок валидации вход данных
+		 */
+
+		Withdraw::id($request->input('id'))->currency($request->input('currency'))->transaction_compleated();
 	}
 
 	public function cancel_payment(Request $request){
