@@ -148,7 +148,17 @@ class CoinPayments implements CoinPaymentsInterface
 		if ($result['error'] != 'ok'){
 			throw new \Exception($result['error']);			
 		}
-		dd($result);
+		
+		Log::info('CoinPayments withdraw', [
+			'result' => $result
+		]);
+	}
+
+	public function webhookwithdraw(Request $request){
+		Log::info('CoinPayments webhookwithdraw', [
+			'request' => $request->all(),
+			'request' => $request
+		]);
 	}
 
 	public function cancel_payment(Request $request){
