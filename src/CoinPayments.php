@@ -17,6 +17,8 @@ use Selfreliance\CoinPayments\Libs\CoinPaymentsAPI;
 use Selfreliance\CoinPayments\Exceptions\CoinPaymentsException;
 use Log;
 use Withdraw;
+use Selfreliance\Etheris\Etheris;
+
 class CoinPayments implements CoinPaymentsInterface
 {
 	use ValidatesRequests;
@@ -143,24 +145,29 @@ class CoinPayments implements CoinPaymentsInterface
     }
 
 	public function send_money($payment_id, $amount, $address, $currency){
-		$auto_confirm = true;
-		$ipn_url      = Route('coinpayments.webhookwithdraw');
-		$result       = $this->cps->CreateWithdrawal($amount, $currency, $address, $auto_confirm, $ipn_url);
-		if ($result['error'] != 'ok'){
-			throw new \Exception($result['error']);			
+		if($currency == 'ETH'){
+			$EthClass = new Etheris();
+			return $EthClass->send_money($payment_id, $amount, $address, $currency);
+		}else{
+			$auto_confirm = true;
+			$ipn_url      = Route('coinpayments.webhookwithdraw');
+			$result       = $this->cps->CreateWithdrawal($amount, $currency, $address, $auto_confirm, $ipn_url);
+			if ($result['error'] != 'ok'){
+				throw new \Exception($result['error']);			
+			}
+
+			$PassData               = new \stdClass();
+			$PassData->sending      = false;
+			$PassData->coinpayments = true;
+			$PassData->add_info     = [
+				"id"        => $result['result']['id'],
+				'status'    => $result['result']['status'],
+				'amount'    => $result['result']['amount'],
+				"full_data" => $result
+			];
+
+			return $PassData;
 		}
-
-		$PassData               = new \stdClass();
-		$PassData->sending      = false;
-		$PassData->coinpayments = true;
-		$PassData->add_info     = [
-			"id"        => $result['result']['id'],
-			'status'    => $result['result']['status'],
-			'amount'    => $result['result']['amount'],
-			"full_data" => $result
-		];
-
-		return $PassData;
 	}
 
 	public function webhookwithdraw(Request $request){
