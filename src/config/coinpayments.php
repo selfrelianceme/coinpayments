@@ -1,7 +1,7 @@
 <?php
 return [
-	'public_key'  => '3326098c93ebbd2e7ec5db264b3c3216541b2f687a68d2bfc7179bc8fcd4c02b',
-	'private_key' => '56567300d24810129e02cc71C65DB753698d055dc1bc64303781cBd866854348',
-	'merchant_id' => '5de457d038ad239338d79124ab95b0b3',
-	'ipn_secret'  => 'XjqBxce9fThzsd4R'
+	'public_key'  => 'ce5d2f42a0349fc660edab1aaa4711c09bc7f25966950c680db3564b2ea26015',
+	'private_key' => '2fd6D2404ba34EA40ea32d7A177562308B6dcFd3846b17BA4A250bB728456219',
+	'merchant_id' => 'c1e6f760bee8f854cfbc7def4911e39d',
+	'ipn_secret'  => '18h7UP8W4uryszTN'
 ];

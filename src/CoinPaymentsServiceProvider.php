@@ -28,6 +28,8 @@ class CoinPaymentsServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->mergeConfigFrom(
+            __DIR__.'/config/coinpayments.php', 'coinpayments'
+        );
     }
 }
