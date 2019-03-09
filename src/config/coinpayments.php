@@ -20,7 +20,7 @@ return [
 
     /**
      * CoinPayments ipn secret
-     * https://www.coinpayments.net/acct-settings -> 
+     * https://www.coinpayments.net/acct-settings
      */
 	'ipn_secret'  => env('CP_IPN_SECRET','cp_ipn_secret')
 ];
