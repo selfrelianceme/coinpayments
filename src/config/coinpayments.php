@@ -1,7 +1,26 @@
 <?php
 return [
-	'public_key'  => 'ce5d2f42a0349fc660edab1aaa4711c09bc7f25966950c680db3564b2ea26015',
-	'private_key' => '2fd6D2404ba34EA40ea32d7A177562308B6dcFd3846b17BA4A250bB728456219',
-	'merchant_id' => 'c1e6f760bee8f854cfbc7def4911e39d',
-	'ipn_secret'  => '18h7UP8W4uryszTN'
+    /**
+     * CoinPayment public key
+     * https://www.coinpayments.net/acct-api-keys
+     */
+	'public_key'  => env('CP_PUBLIC_KEY', 'cp_public_key'),
+
+    /**
+     * CoinPayments private key
+     * https://www.coinpayments.net/acct-api-keys
+     */
+	'private_key' => env('CP_PRIVATE_KEY','cp_private_key'),
+
+    /**
+     * CoinPayments merchant ID
+     * https://www.coinpayments.net/acct-settings
+     */
+	'merchant_id' => env('CP_MERCHANT_ID','cp_merchant_id'),
+
+    /**
+     * CoinPayments ipn secret
+     * https://www.coinpayments.net/acct-settings -> 
+     */
+	'ipn_secret'  => env('CP_IPN_SECRET','cp_ipn_secret')
 ];
