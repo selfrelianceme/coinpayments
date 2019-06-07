@@ -52,7 +52,7 @@ class CoinPayments implements CoinPaymentsInterface {
      * @throws \Exception
      */
     public function form($payment_id, $sum, $units){
-		if(config('use_merchant') === true){
+        if(config('coinpayments.use_merchant') === true){
 		    ob_start();
             echo '<form class="form_payment" id="FORM_pay_ok" action="https://www.coinpayments.net/index.php" method="POST">';
             $form_data = [
@@ -93,6 +93,9 @@ class CoinPayments implements CoinPaymentsInterface {
             $PassData = new \stdClass();
             $PassData->address = $result['result']['address'];
             $PassData->another_site = false;
+            if(array_key_exists('dest_tag', $result['result'])){
+                $PassData->destination_tag = $result['result']['dest_tag'];
+            }
             return $PassData;
         }
     }
