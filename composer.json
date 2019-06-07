@@ -1,7 +1,7 @@
 {
   "name": "selfreliance/coinpayments",
   "type": "library",
-  "version": "0.0.24",
+  "version": "0.0.25",
   "description": "CoinPayments bitcoin payment system for laravel",
   "keywords": ["laravel"],
   "homepage": "https://github.com/selfrelianceme/coinpayments",

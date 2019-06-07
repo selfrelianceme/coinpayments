@@ -136,7 +136,7 @@ class CoinPayments implements CoinPaymentsInterface {
             if($is_complete) {
                 $PassData = new \stdClass();
                 $PassData->amount = $request['received_amount'];
-                $PassData->payment_id = $request['invoice'];
+                $PassData->payment_id = $request['item_number'];
                 $PassData->search_by_currency = true;
                 $PassData->currency = $request['currency1'];
                 $PassData->transaction = $request['txn_id'];
