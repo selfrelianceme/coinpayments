@@ -31,5 +31,11 @@ class CoinPaymentsServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             __DIR__.'/config/coinpayments.php', 'coinpayments'
         );
+
+        $this->app->bind(CoinPayments::class, function () {
+            return new CoinPayments();
+        });
+
+        $this->app->alias(CoinPayments::class, 'payment.coinpayments');
     }
 }

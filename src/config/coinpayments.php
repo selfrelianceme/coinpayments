@@ -7,6 +7,11 @@ return [
 	'public_key'  => env('CP_PUBLIC_KEY', 'cp_public_key'),
 
     /**
+     * Generate address for client or go to merchant
+     */
+    'use_merchant' => env('CP_USE_MERCHANT', false),
+
+    /**
      * CoinPayments private key
      * https://www.coinpayments.net/acct-api-keys
      */

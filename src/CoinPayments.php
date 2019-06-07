@@ -5,8 +5,6 @@ namespace Selfreliance\CoinPayments;
 use App\Models\MerchantPosts;
 use Illuminate\Http\Request;
 
-use Illuminate\Support\Facades\Route;
-
 use Illuminate\Foundation\Validation\ValidatesRequests;
 
 use Selfreliance\CoinPayments\Events\CoinPaymentsPaymentIncome;
@@ -16,8 +14,6 @@ use Selfreliance\CoinPayments\CoinPaymentsInterface;
 
 use Selfreliance\CoinPayments\Libs\CoinPaymentsAPI;
 use Selfreliance\CoinPayments\Exceptions\CoinPaymentsException;
-
-use Withdraw;
 
 class CoinPayments implements CoinPaymentsInterface {
     use ValidatesRequests;
@@ -30,6 +26,11 @@ class CoinPayments implements CoinPaymentsInterface {
         $this->cps->Setup(config('coinpayments.private_key'),config('coinpayments.public_key'));
     }
 
+    /**
+     * @param bool $unit
+     * @return mixed
+     * @throws \Exception
+     */
     public function balance($unit = false){
         if(!$unit) {
             $unit = $this->unit;
@@ -43,56 +44,70 @@ class CoinPayments implements CoinPaymentsInterface {
         return $result['result'][$unit]['balancef'];
     }
 
-    public function form($payment_id,$sum,$units){
-//		$req = [
-//			'amount'      => $sum,
-//			'currency1'   => $units,
-//			'currency2'   => $units,
-//			'item_name'   => 'Order '.$payment_id,
-//			'item_number' => $payment_id,
-//			'ipn_url'     => Route('coinpayments.confirm')
-//		];
-//		$result = $this->cps->CreateTransaction($req);
+    /**
+     * @param $payment_id
+     * @param $sum
+     * @param $units
+     * @return \stdClass
+     * @throws \Exception
+     */
+    public function form($payment_id, $sum, $units){
+		if(config('use_merchant') === true){
+		    ob_start();
+            echo '<form class="form_payment" id="FORM_pay_ok" action="https://www.coinpayments.net/index.php" method="POST">';
+            $form_data = [
+                'cmd'           => '_pay_simple',
+                'reset'         => '1',
+                'merchant'      => config('coinpayments.merchant_id'),
+                'item_name'     => $this->memo,
+                'invoice'       => $payment_id,
+                'currency'      => $units,
+                'amountf'       => $sum,
+                'want_shipping' => 0,
+                'success_url'   => '',
+                'cancel_url'    => '',
+                'ipn_url'       => route('coinpayments.confirm'),
+            ];
+            foreach($form_data as $key => $value) {
+                echo '<input type="hidden" name="'.$key.'" value="'.$value.'">';
+            }
+            echo '<input type="submit" style="width:0;height:0;border:0px; background:none;" class="content__login-submit submit_pay_ok" name="PAYMENT_METHOD" value="">';
+            echo '</form>';
+            $content = ob_get_contents();
+            ob_end_clean();
+            return $content;
+        }else{
+            $req = [
+                'amount'      => $sum,
+                'currency1'   => $units,
+                'currency2'   => $units,
+                'item_name'   => 'Order '.$payment_id,
+                'item_number' => $payment_id,
+                'ipn_url'     => route('coinpayments.confirm')
+            ];
+            $result = $this->cps->CreateTransaction($req);
 
-//		if ($result['error'] != 'ok'){
-//			throw new \Exception($result['error']);
-//		}
-//		$PassData = new \stdClass();
-//		$PassData->address = $result['result']['address'];
-//		$PassData->another_site = false;
-//		return $PassData;
-
-
-        ob_start();
-        echo '<form class="form_payment" id="FORM_pay_ok" action="https://www.coinpayments.net/index.php" method="POST">';
-        $form_data = [
-            'cmd'           => '_pay_simple',
-            'reset'         => '1',
-            'merchant'      => config('coinpayments.merchant_id'),
-            'item_name'     => $this->memo,
-            'invoice'       => $payment_id,
-            'currency'      => $units,
-            'amountf'       => $sum,
-            'want_shipping' => 0,
-            'success_url'   => '',
-            'cancel_url'    => '',
-            'ipn_url'       => Route('coinpayments.confirm'),
-        ];
-        foreach($form_data as $key => $value) {
-            echo '<input type="hidden" name="'.$key.'" value="'.$value.'">';
+            if ($result['error'] != 'ok'){
+                throw new \Exception($result['error']);
+            }
+            $PassData = new \stdClass();
+            $PassData->address = $result['result']['address'];
+            $PassData->another_site = false;
+            return $PassData;
         }
-        echo '<input type="submit" style="width:0;height:0;border:0px; background:none;" class="content__login-submit submit_pay_ok" name="PAYMENT_METHOD" value="">';
-        echo '</form>';
-        $content = ob_get_contents();
-        ob_end_clean();
-        return $content;
-
     }
 
+    /**
+     * @param $request
+     */
     public function check_transaction($request){
 
     }
 
+    /**
+     * @param Request $request
+     * @return Ipn
+     */
     public function validateIPNRequest(Request $request){
         return $this->income_payment($request->all(),$request->server(),$request->headers);
     }
@@ -176,9 +191,17 @@ class CoinPayments implements CoinPaymentsInterface {
         return ($order_status >= 100 || $order_status == 2);
     }
 
-    public function send_money($payment_id,$amount,$address,$currency){
+    /**
+     * @param $payment_id
+     * @param $amount
+     * @param $address
+     * @param $currency
+     * @return \stdClass
+     * @throws \Exception
+     */
+    public function send_money($payment_id, $amount, $address, $currency){
         $auto_confirm = true;
-        $ipn_url = Route('coinpayments.webhookwithdraw');
+        $ipn_url = route('coinpayments.webhookwithdraw');
         $result = $this->cps->CreateWithdrawal($amount,$currency,$address,$auto_confirm,$ipn_url);
         if($result['error'] != 'ok') {
             throw new \Exception($result['error']);
@@ -197,6 +220,9 @@ class CoinPayments implements CoinPaymentsInterface {
         return $PassData;
     }
 
+    /**
+     * @param Request $request
+     */
     public function webhookwithdraw(Request $request){
         /**
          * Добавить больше проверок валидации вход данных
@@ -212,6 +238,9 @@ class CoinPayments implements CoinPaymentsInterface {
         ]);
     }
 
+    /**
+     * @param Request $request
+     */
     public function cancel_payment(Request $request){
 
     }
